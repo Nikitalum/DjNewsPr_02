@@ -1,10 +1,44 @@
-<!DOCTYPE html>
+{% extends 'flatpages/default.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>
+        {% block title %}
+Новости
+{% endblock %}
+    </title>
 </head>
-<body>
+<body>{% block content %}
 
+ <table class="table table-hover">
+                                    <thead>
+                                        <th>Название</th>
+                                    	<th>Дата</th>
+                                    	<th>Кратко</th>
+                                    </thead>
+     <tbody>
+     {% for el in articles %}
+     <tr><td><a href="">{{ el.title }}</a></td><td>{{ el.date }}</td><td>{{ el.text|slice:":20" }} ...</td></tr>
+     {% endfor %}
+
+     </tbody>
+
+ </table>
+{% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+             {{ page_obj.number }}
+   {% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+{% endif %}
+{% endblock content %}
 </body>
 </html>
