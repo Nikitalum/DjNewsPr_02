@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% block title %}
+{{ article.title|slice:15 }}
+{% endblock %}
+{% block content %}
+<div class="header">
+</div>
+<div>
+    <h4>{{ article.title}}</h4>
+    <p>{{ article.text }}</p>
+    <p>{{ article.date|date:"d m Y" }}</p>
+</div>
+{% endblock %}
