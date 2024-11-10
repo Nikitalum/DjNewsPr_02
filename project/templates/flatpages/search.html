@@ -12,13 +12,33 @@
 </head>
 <body>
 {% block content %}
-<div align="center">
-<h2> Что вы бы хотели найти </h2>
+<div align="center"><h2> Что вы бы хотели найти </h2>
 
     <form action="" method="get">
         {{ filterset.form.as_p }}
         <input type="submit" value="Начать поиск"/>
     </form>
+        </div>
+
+<table class="table table-hover">
+
+                                    <thead>
+                                        <th>Название</th>
+                                    	<th>Дата</th>
+                                    </thead>
+     <tbody>
+     {% if articles %}
+     {% for article in articles %}
+     <tr><td><a href="{% url 'articles_detail' article.id %}">{{ article.title}}</a></td><td>{{ article.date }}</td></tr>
+     {% endfor %}
+        {% else %}
+     <tr><td><h4>Новостей не найдено</h4></td></tr>
+     {% endif %}
+
+     </tbody>
+
+ </table>
+
 {% endblock content %}
 </body>
 </html>

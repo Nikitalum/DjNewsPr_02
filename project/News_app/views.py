@@ -44,6 +44,14 @@ class ArticlesList(ListView):
     context_object_name = 'articles'
     paginate_by = 10
 
+
+class ArticlesSearch(ListView):
+    model = Articles
+    ordering = 'id'
+    template_name = 'flatpages/search.html'
+    context_object_name = 'articles'
+    paginate_by = 100
+
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = ArticlesFilter(self.request.GET, queryset)
