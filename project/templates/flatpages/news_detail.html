@@ -6,9 +6,9 @@
 {% block content %}
 <div class="header">
 </div>
-<div>
+<div style="padding: 25px;">
     <h4>{{ article.title}}</h4>
-    <p>{{ article.text }}</p>
+    <div style="text-indent:25px;" align="justify"><p>{{ article.text|linebreaks }}</p></div>
     <p>{{ article.date|date:"d m Y" }}</p>
 </div>
 {% endblock %}

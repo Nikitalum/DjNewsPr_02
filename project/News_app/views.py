@@ -47,10 +47,10 @@ class ArticlesList(ListView):
 
 class ArticlesSearch(ListView):
     model = Articles
-    ordering = 'id'
+    ordering = 'date'
     template_name = 'flatpages/search.html'
     context_object_name = 'articles'
-    paginate_by = 100
+    paginate_by = 8
 
     def get_queryset(self):
         queryset = super().get_queryset()
