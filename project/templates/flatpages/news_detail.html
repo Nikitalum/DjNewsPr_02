@@ -11,4 +11,7 @@
     <div style="text-indent:25px;" align="justify"><p>{{ article.text|linebreaks }}</p></div>
     <p>{{ article.date|date:"d m Y" }}</p>
 </div>
+<div>
+    <a href="{% url 'news_edit' article.id %}"><input type="button" value="Редактировать"/></a>
+</div>
 {% endblock %}

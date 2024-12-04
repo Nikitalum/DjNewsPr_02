@@ -43,6 +43,10 @@
        {% endif %}
 <a href="?page=last">Последняя</a>
 {% endif %}
+<div><h1></h1>
+    <a href="{% url 'news_create' %}"><input type="button" value="Добавить новость"/></a>
+    <a href="{% url 'articles_create' %}"><input type="button" value="Добавить статью"/></a>
+</div>
 {% endblock content %}
 </body>
 </html>

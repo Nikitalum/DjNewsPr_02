@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from .models import Articles
-from .forms import ArticlesForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from .models import Articles, Post
+from .forms import ArticlesForm, ArticlesCrForm, NewsCrForm
 from .filters import ArticlesFilter
 from django.http import HttpResponse
+from django.urls import reverse_lazy
 
 
 def hello(request):
@@ -67,3 +68,37 @@ class ArticlesDetail(DetailView):
    model = Articles
    template_name = 'flatpages/news_detail.html'
    context_object_name = 'article'
+
+
+class ArticlesCreate(CreateView):
+    form_class = ArticlesCrForm
+    model = Articles
+    category = Articles
+    template_name = 'flatpages/add.html'
+    success_url = reverse_lazy('articles_list')
+
+
+class NewsCreate(CreateView):
+    form_class = NewsCrForm
+    model = Post
+    category = news
+    template_name = 'flatpages/add.html'
+    success_url = reverse_lazy('articles_list')
+
+
+class ArticlesEdit(UpdateView):
+    form_class = ArticlesCrForm
+    model = Articles
+    category = Articles
+    context_object_name = 'articles_edit'
+    template_name = 'flatpages/edit.html'
+    success_url = 'flatpages/news.html'
+
+
+class NewsEdit(UpdateView):
+    form_class = NewsCrForm
+    model = Articles
+    category = Articles
+    context_object_name = 'news_edit'
+    template_name = 'flatpages/edit.html'
+    success_url = reverse_lazy('articles_list')
