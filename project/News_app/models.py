@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 
 
 class Articles(models.Model):
@@ -23,15 +22,3 @@ class Category(models.Model):
     def __str__(self):
         return self.name.title()
 
-
-class Post(models.Model):
-    article = 'AR'
-    news_post = 'NP'
-    POST_TYPES = [
-        (article, 'Статья'),
-        (news_post, 'Новость')
-    ]
-    post_type = models.CharField(max_length=2, choices=POST_TYPES, default=news_post)
-
-    def get_absolute_url(self):
-        return reverse("post_detail", kwargs={"pk": self.pk})

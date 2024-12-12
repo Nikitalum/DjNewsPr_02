@@ -12,12 +12,11 @@ class ArticlesForm(forms.ModelForm):
 class ArticlesCrForm(forms.ModelForm):
    class Meta:
        model = Articles
-       fields = 'title', 'text', 'date', 'category',
+       fields = 'title', 'text', 'date',
 
 
 class NewsCrForm(forms.ModelForm):
    class Meta:
        model = Articles
-       fields = 'title', 'text', 'date', 'category',
-       def form_Valid(self):
-           messages.success(request, "Your post has been successfully updated")
+       fields = 'title', 'text', 'date',
+
