@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from .models import Articles, Post
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import Articles
 from .forms import ArticlesForm, ArticlesCrForm, NewsCrForm
 from .filters import ArticlesFilter
-from django.http import HttpResponse
 from django.urls import reverse_lazy
+from .models import Category
 
 
 def hello(request):
@@ -13,19 +13,6 @@ def hello(request):
 
 def search(request):
     return render(request, 'flatpages/search.html')
-
-
-def multiply(request):
-   number = request.GET.get('number')
-   multiplier = request.GET.get('multiplier')
-
-   try:
-       result = int(number) * int(multiplier)
-       html = f"<html><body>{number}*{multiplier}={result}</body></html>"
-   except (ValueError, TypeError):
-       html = f"<html><body>Invalid input.</body></html>"
-
-   return HttpResponse(html)
 
 
 def search_news(request):
@@ -73,23 +60,30 @@ class ArticlesDetail(DetailView):
 class ArticlesCreate(CreateView):
     form_class = ArticlesCrForm
     model = Articles
-    category = Articles
     template_name = 'flatpages/add.html'
     success_url = reverse_lazy('articles_list')
+
+    def form_valid(self, form):
+        news = form.save(commit=False)
+        news.category = Category.objects.get(id=2)
+        return super().form_valid(form)
 
 
 class NewsCreate(CreateView):
     form_class = NewsCrForm
-    model = Post
-    category = news
+    model = Articles
     template_name = 'flatpages/add.html'
     success_url = reverse_lazy('articles_list')
+
+    def form_valid(self, form):
+        news = form.save(commit=False)
+        news.category = Category.objects.get(id=1)
+        return super().form_valid(form)
 
 
 class ArticlesEdit(UpdateView):
     form_class = ArticlesCrForm
     model = Articles
-    category = Articles
     context_object_name = 'articles_edit'
     template_name = 'flatpages/edit.html'
     success_url = 'flatpages/news.html'
@@ -98,7 +92,19 @@ class ArticlesEdit(UpdateView):
 class NewsEdit(UpdateView):
     form_class = NewsCrForm
     model = Articles
-    category = Articles
     context_object_name = 'news_edit'
     template_name = 'flatpages/edit.html'
     success_url = reverse_lazy('articles_list')
+
+
+class NewsDelete(DeleteView):
+    model = Articles
+    template_name = 'flatpages/delete.html'
+    success_url = reverse_lazy('articles_list')
+
+
+class ArticlesDelete(DeleteView):
+    model = Articles
+    template_name = 'flatpages/delete.html'
+    success_url = reverse_lazy('articles_list')
+
