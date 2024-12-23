@@ -4,7 +4,7 @@ from .models import Articles
 from .forms import ArticlesForm, ArticlesCrForm, NewsCrForm
 from .filters import ArticlesFilter
 from django.urls import reverse_lazy
-from .models import Category
+from .models import Category, Post
 
 
 def hello(request):
@@ -52,33 +52,33 @@ class ArticlesSearch(ListView):
 
 
 class ArticlesDetail(DetailView):
-   model = Articles
-   template_name = 'flatpages/news_detail.html'
-   context_object_name = 'article'
+    model = Articles
+    template_name = 'flatpages/news_detail.html'
+    context_object_name = 'article'
 
 
 class ArticlesCreate(CreateView):
     form_class = ArticlesCrForm
-    model = Articles
+    model = Post
     template_name = 'flatpages/add.html'
     success_url = reverse_lazy('articles_list')
 
     def form_valid(self, form):
-        news = form.save(commit=False)
-        news.category = Category.objects.get(id=2)
+        post = form.save(commit=False)
+        post.type = 'новость'
         return super().form_valid(form)
 
-
-class NewsCreate(CreateView):
-    form_class = NewsCrForm
-    model = Articles
-    template_name = 'flatpages/add.html'
-    success_url = reverse_lazy('articles_list')
-
-    def form_valid(self, form):
-        news = form.save(commit=False)
-        news.category = Category.objects.get(id=1)
-        return super().form_valid(form)
+#
+# class NewsCreate(CreateView):
+#     form_class = NewsCrForm
+#     model = Articles
+#     template_name = 'flatpages/add.html'
+#     success_url = reverse_lazy('articles_list')
+#
+#     def form_valid(self, form):
+#         news = form.save(commit=False)
+#         news.category = Category.objects.get(id=1)
+#         return super().form_valid(form)
 
 
 class ArticlesEdit(UpdateView):
