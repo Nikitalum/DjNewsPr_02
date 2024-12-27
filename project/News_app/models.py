@@ -32,7 +32,7 @@ class Post(models.Model):
         (news, 'новость')
     ]
     type = models.CharField(max_length=1, choices=POSITIONS, default=news)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField('Дата')
     category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=225)
     text = models.TextField()

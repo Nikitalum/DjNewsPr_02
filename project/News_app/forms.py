@@ -12,11 +12,11 @@ class ArticlesForm(forms.ModelForm):
 class ArticlesCrForm(forms.ModelForm):
    class Meta:
        model = Post
-       fields = 'title', 'text', 'category'
+       fields = 'title', 'text', 'date', 'category'
 
 
 class NewsCrForm(forms.ModelForm):
    class Meta:
-       model = Articles
+       model = Post
        fields = 'title', 'text', 'date',
 
