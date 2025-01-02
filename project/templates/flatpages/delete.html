@@ -5,7 +5,7 @@
 <hr>
 <form action="" method="post">
     {% csrf_token %}
-    <p> Вы уверены, что хотите удалить "{{ articles.title}}"?</p>
+    <p> Вы уверены, что хотите удалить "{{ articles.title }}"?</p>
     <input type="submit" value="Подтвердить" />
     <a href="{% url 'articles_list' %}"><input type="button" value="Вернуться к новостям"/></a>
 </form>

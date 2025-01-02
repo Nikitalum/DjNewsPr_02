@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'News_app',
     'django_filters',
+    'accounts',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 SITE_ID = 1
@@ -54,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -74,8 +79,16 @@ TEMPLATES = [
     },
 ]
 
+LOGIN_REDIRECT_URL = "/news/"
+LOGOUT_REDIRECT_URL = "/news/"
+ACCOUNT_SIGNUP_REDIRECT_URL = "/news/"
 WSGI_APPLICATION = 'project.wsgi.application'
+ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignUpForm"}
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

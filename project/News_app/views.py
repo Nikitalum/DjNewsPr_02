@@ -5,6 +5,7 @@ from .forms import ArticlesForm, ArticlesCrForm, NewsCrForm
 from .filters import ArticlesFilter
 from django.urls import reverse_lazy
 from .models import Category, Post
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 def hello(request):
@@ -57,7 +58,8 @@ class ArticlesDetail(DetailView):
     context_object_name = 'article'
 
 
-class ArticlesCreate(CreateView):
+class ArticlesCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('News_app.add_post',)
     form_class = ArticlesCrForm
     model = Post
     template_name = 'flatpages/add.html'
@@ -71,7 +73,8 @@ class ArticlesCreate(CreateView):
         return super().form_valid(form)
 
 
-class ArticlesEdit(UpdateView):
+class ArticlesEdit(PermissionRequiredMixin, UpdateView):
+    permission_required = ('News_app.change_post',)
     form_class = ArticlesCrForm
     model = Post
     context_object_name = 'articles_edit'
@@ -79,7 +82,8 @@ class ArticlesEdit(UpdateView):
     success_url = reverse_lazy('articles_list')
 
 
-class NewsEdit(UpdateView):
+class NewsEdit(PermissionRequiredMixin, UpdateView):
+    permission_required = ('News_app.change_post',)
     form_class = NewsCrForm
     model = Post
     context_object_name = 'news_edit'
@@ -87,14 +91,18 @@ class NewsEdit(UpdateView):
     success_url = reverse_lazy('articles_list')
 
 
-class NewsDelete(DeleteView):
-    model = Articles
+class NewsDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('News_app.delete_post',)
+    model = Post
     template_name = 'flatpages/delete.html'
+    context_object_name = 'articles'
     success_url = reverse_lazy('articles_list')
 
 
-class ArticlesDelete(DeleteView):
-    model = Articles
+class ArticlesDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('News_app.delete_post',)
+    model = Post
     template_name = 'flatpages/delete.html'
+    context_object_name = 'articles'
     success_url = reverse_lazy('articles_list')
 
