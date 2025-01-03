@@ -81,7 +81,7 @@ TEMPLATES = [
 
 LOGIN_REDIRECT_URL = "/news/"
 LOGOUT_REDIRECT_URL = "/news/"
-ACCOUNT_SIGNUP_REDIRECT_URL = "/news/"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 WSGI_APPLICATION = 'project.wsgi.application'
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignUpForm"}
 
