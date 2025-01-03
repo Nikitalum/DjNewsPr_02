@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+Новости
+{% endblock %}
+    </title>
+</head>
+<body>
+{% block content %}
+<div align="center">
+<h2> У вас нет доступа к этой странице </h2>
+<a href="{% url 'articles_list' %}"><input type="button" value="Вернуться к главной странице"/></a></div>
+{% endblock %}
+</body>
+</html>

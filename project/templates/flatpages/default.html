@@ -23,11 +23,15 @@
                     <a class="navbar-brand" href="{% url 'search' %}">Поиск</a>
                 </div>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="{% url 'about' %}">
-                               О сайте
-                        </a>
-                    </li></ul>
+                    {% if user.is_anonymous %}
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'login' %}">Вход</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'signup' %}">Регистрация</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Выход</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'about' %}"> О сайте</a></li>
+                </ul>
             </div>
         </nav>
     </div>

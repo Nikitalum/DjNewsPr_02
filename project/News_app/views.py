@@ -4,7 +4,8 @@ from .models import Articles
 from .forms import ArticlesForm, ArticlesCrForm, NewsCrForm
 from .filters import ArticlesFilter
 from django.urls import reverse_lazy
-from .models import Category
+from .models import Category, Post
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 def hello(request):
@@ -26,7 +27,7 @@ def news(request):
 
 
 class ArticlesList(ListView):
-    model = Articles
+    model = Post
     ordering = 'id'
     template_name = 'flatpages/news.html'
     context_object_name = 'articles'
@@ -34,7 +35,7 @@ class ArticlesList(ListView):
 
 
 class ArticlesSearch(ListView):
-    model = Articles
+    model = Post
     ordering = 'date'
     template_name = 'flatpages/search.html'
     context_object_name = 'articles'
@@ -52,59 +53,56 @@ class ArticlesSearch(ListView):
 
 
 class ArticlesDetail(DetailView):
-   model = Articles
-   template_name = 'flatpages/news_detail.html'
-   context_object_name = 'article'
+    model = Post
+    template_name = 'flatpages/news_detail.html'
+    context_object_name = 'article'
 
 
-class ArticlesCreate(CreateView):
+class ArticlesCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('News_app.add_post',)
     form_class = ArticlesCrForm
-    model = Articles
+    model = Post
     template_name = 'flatpages/add.html'
     success_url = reverse_lazy('articles_list')
 
     def form_valid(self, form):
-        news = form.save(commit=False)
-        news.category = Category.objects.get(id=2)
+        post = form.save(commit=False)
+        if self.request.path == '/articles/create':
+            post.type = 'A'
+        post.save()
         return super().form_valid(form)
 
 
-class NewsCreate(CreateView):
-    form_class = NewsCrForm
-    model = Articles
-    template_name = 'flatpages/add.html'
-    success_url = reverse_lazy('articles_list')
-
-    def form_valid(self, form):
-        news = form.save(commit=False)
-        news.category = Category.objects.get(id=1)
-        return super().form_valid(form)
-
-
-class ArticlesEdit(UpdateView):
+class ArticlesEdit(PermissionRequiredMixin, UpdateView):
+    permission_required = ('News_app.change_post',)
     form_class = ArticlesCrForm
-    model = Articles
+    model = Post
     context_object_name = 'articles_edit'
     template_name = 'flatpages/edit.html'
-    success_url = 'flatpages/news.html'
+    success_url = reverse_lazy('articles_list')
 
 
-class NewsEdit(UpdateView):
+class NewsEdit(PermissionRequiredMixin, UpdateView):
+    permission_required = ('News_app.change_post',)
     form_class = NewsCrForm
-    model = Articles
+    model = Post
     context_object_name = 'news_edit'
     template_name = 'flatpages/edit.html'
     success_url = reverse_lazy('articles_list')
 
 
-class NewsDelete(DeleteView):
-    model = Articles
+class NewsDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('News_app.delete_post',)
+    model = Post
     template_name = 'flatpages/delete.html'
+    context_object_name = 'articles'
     success_url = reverse_lazy('articles_list')
 
 
-class ArticlesDelete(DeleteView):
-    model = Articles
+class ArticlesDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('News_app.delete_post',)
+    model = Post
     template_name = 'flatpages/delete.html'
+    context_object_name = 'articles'
     success_url = reverse_lazy('articles_list')
 

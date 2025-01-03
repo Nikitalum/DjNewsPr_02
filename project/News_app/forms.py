@@ -1,5 +1,5 @@
 from django import forms
-from .models import Articles
+from .models import Articles, Post
 from django.contrib import messages
 
 
@@ -11,12 +11,12 @@ class ArticlesForm(forms.ModelForm):
 
 class ArticlesCrForm(forms.ModelForm):
    class Meta:
-       model = Articles
-       fields = 'title', 'text', 'date',
+       model = Post
+       fields = 'title', 'text', 'date', 'category'
 
 
 class NewsCrForm(forms.ModelForm):
    class Meta:
-       model = Articles
+       model = Post
        fields = 'title', 'text', 'date',
 
