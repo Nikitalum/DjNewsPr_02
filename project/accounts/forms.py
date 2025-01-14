@@ -1,6 +1,7 @@
 from django import forms
 from allauth.account.forms import SignupForm
 from django.contrib.auth.models import User, Group
+from django.core.mail import EmailMultiAlternatives
 
 
 class CustomSignUpForm(SignupForm):
@@ -23,5 +24,16 @@ class CustomSignUpForm(SignupForm):
         user = super().save(request)
         authors = Group.objects.get(name="authors")
         user.groups.add(authors)
-        return user
 
+        subject = 'Добро пожаловать в наш новостной сайт!'
+        text = f'{user.username}, вы успешно зарегистрировались на сайте!'
+        html = (
+            f'<b>{user.username}</b>, вы успешно зарегистрировались на '
+            f'<a href="http://127.0.0.1:8000/">сайте</a>!'
+        )
+        msg = EmailMultiAlternatives(
+            subject=subject, body=text, from_email=None, to=[user.email]
+        )
+        msg.attach_alternative(html, "text/html")
+        msg.send()
+        return user
