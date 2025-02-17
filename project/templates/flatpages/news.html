@@ -15,12 +15,20 @@
                                         <th>Название</th>
                                     	<th>Дата</th>
                                     	<th>Кратко</th>
+                                        <th>Категория</th>
                                     </thead>
      <tbody>
      {% for el in articles %}
-     <tr><td><a href="{% url 'articles_detail' el.id %}">{{ el.title}}</a></td><td>{{ el.date }}</td><td>{{ el.text|slice:":20" }} ...</td></tr>
+     <tr>
+        <td><a href="{% url 'articles_detail' el.id %}">{{ el.title}}</a></td>
+        <td>{{ el.date }}</td>
+        <td>{{ el.text|slice:":20" }} ...</td>
+        <td>{% for category in el.category.all %}
+            <a href="{% url 'category_list' category.id %}">{{ category }}</a>
+            {% endfor %}
+        </td>
+    </tr>
      {% endfor %}
-
      </tbody>
 
  </table>

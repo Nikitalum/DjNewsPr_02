@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'News_app',
+    'News_app.apps.NewsAppConfig',
     'django_filters',
     'accounts',
     'allauth',
@@ -84,7 +84,7 @@ TEMPLATES = [
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_LOGIN_METHODS = {'username'}
 LOGIN_REDIRECT_URL = "/news/"
 LOGOUT_REDIRECT_URL = "/news/"
 ACCOUNT_EMAIL_VERIFICATION = "optional"
@@ -106,6 +106,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+SITE_URL = 'http://127.0.0.1:8000'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

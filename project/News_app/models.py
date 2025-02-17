@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class Articles(models.Model):
@@ -19,9 +20,22 @@ class Articles(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-
+    subscribers = models.ManyToManyField(User,related_name='categories')
+                
     def __str__(self):
-        return self.name
+        return self.name.title()
+    
+class Subscriber(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions'
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions'
+    )
 
 
 class Post(models.Model):
@@ -36,6 +50,10 @@ class Post(models.Model):
     category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=225)
     text = models.TextField()
+
+    def preview(self):
+        preview=f'{self.text[:124]} ...'
+        return preview
 
     def __str__(self):
         return self.title

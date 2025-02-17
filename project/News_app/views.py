@@ -4,8 +4,12 @@ from .models import Articles
 from .forms import ArticlesForm, ArticlesCrForm, NewsCrForm
 from .filters import ArticlesFilter
 from django.urls import reverse_lazy
-from .models import Category, Post
+from .models import Category, Post, Subscriber
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_protect
+from django.db.models import Exists, OuterRef
 
 
 def hello(request):
@@ -106,3 +110,28 @@ class ArticlesDelete(PermissionRequiredMixin, DeleteView):
     context_object_name = 'articles'
     success_url = reverse_lazy('articles_list')
 
+
+class CategoryListView(ArticlesList):
+    model = Post
+    template_name = 'flatpages/subscriptions.html'
+    context_object_name = 'category_news_list'
+    
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id = self.kwargs['pk'])
+        queryset = Post.objects.filter(category=self.category).order_by('-date')
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['in_not_subscriber'] = self.request.user not in self.category.subscribers.all()
+        context['category'] = self.category
+        return context
+
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+
+    message = 'Вы успешно подписались на рассылку постов категории '
+    return render(request, 'flatpages/subscribe.html', {'category':category, 'message':message})
