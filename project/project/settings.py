@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    
 ]
 
 SITE_ID = 1
@@ -91,16 +95,16 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 WSGI_APPLICATION = 'project.wsgi.application'
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignUpForm"}
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "chesterlum@yandex.ru"
-EMAIL_HOST_PASSWORD = "scpqgicahjmhycqe"
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = "chesterlum@yandex.ru"
-SERVER_EMAIL = "chesterlum@yandex.ru"
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+SERVER_EMAIL = os.getenv('SERVER_EMAIL')
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -108,6 +112,10 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_URL = 'http://127.0.0.1:8000'
+
+APSCHEDULER_DATATIME_FORMAT = 'N j, Y, f:s a'
+
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

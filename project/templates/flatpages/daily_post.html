@@ -1,0 +1,15 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Посты за неделю
+{% endblock title %}
+
+{% block content %}
+<h3>Здравстуйте, новые посты за послежнюю неделю </h3>
+<ul>
+    {% for post in posts %}
+    <li><a href="{{ link }}{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

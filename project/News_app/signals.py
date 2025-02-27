@@ -30,10 +30,9 @@ def send_notifications(preview, pk, title, subscribers):
 def notify_about_new_post(sender, instance, **kwargs):
     if kwargs['action'] == 'post_add':
         categories = instance.category.all()
-        subscribers: list[str] = []
-        for category in categories:
-            subscribers += category.subscribers.all()
+        subscribers_emails = []
+        for cat in categories:
+            subscribers = cat.subscribers.all()
+            subscribers_emails += [s.email for s in subscribers]
 
-        subscribers = [s.email for s in subscribers]
-
-        send_notifications(instance.preview(), instance.pk, instance.title, subscribers)
+        send_notifications(instance.preview(), instance.pk, instance.title, subscribers_emails)

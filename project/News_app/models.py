@@ -20,7 +20,7 @@ class Articles(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    subscribers = models.ManyToManyField(User,related_name='categories')
+    subscribers = models.ManyToManyField(User,related_name='categories', blank = True)
                 
     def __str__(self):
         return self.name.title()
@@ -29,12 +29,12 @@ class Subscriber(models.Model):
     user = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
-        related_name='subscriptions'
+        related_name='subscriber'
     )
     category = models.ForeignKey(
         to='Category',
         on_delete=models.CASCADE,
-        related_name='subscriptions'
+        related_name='subscriber'
     )
 
 

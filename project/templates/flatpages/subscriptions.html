@@ -1,76 +1,26 @@
 {% extends 'flatpages/default.html' %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>
-        {% block title %}
-Новости
-{% endblock %}
-    </title>
-</head>
-<body>
+
+{% block title %}
+Subscriptions
+{% endblock title %}
+
 {% block content %}
-    
-        <p class-center><a href="{% url 'subscribe' category.id %}"><button name="action" value="subscribe">Подписаться</button></a></p>
-        <table class="table table-hover">
-            <thead>
-                <th>Название</th>
-                <th>Дата</th>
-                <th>Кратко</th>
-                <th>Категория</th>
-            </thead>
-<tbody>
-{% for el in category_news_list %}
-<tr>
-<td><a href="{% url 'articles_detail' el.id %}">{{ el.title}}</a></td>
-<td>{{ el.date }}</td>
-<td>{{ el.text|slice:":20" }} ...</td>
-<td>{% for category in el.category.all %}
-<a href="{% url 'category_list' category.id}">{{ category }}</a>
-{% endfor %}
-</td>
-</tr>
-{% endfor %}
-</tbody>
+<h3>Вы можете подписаться на следующие категории:</h3>
+    {% for category in categories  %}
+        <p>
+            <h4><b>{{ category.name }}</b></h4>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="category_id" value="{{ category.id }}" />
 
-</table>
-{% if page_obj.has_previous %}
-<a href="?page={{ page_obj.paginator.first_page_number }}">Первая</a>
-       <a href="?page=1">1</a>
-       {% if page_obj.previous_page_number != 1 %}
-
-           ...
-           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
-       {% endif %}
-   {% endif %}
-             {{ page_obj.number }}
-   {% if page_obj.has_next %}
-<a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-       {% if paginator.num_pages != page_obj.next_page_number %}
-           ...
-           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-
-       {% endif %}
-<a href="?page=last">Последняя</a>
-{% endif %}
-        {% endblock %}
-
-    <!-- {% for category in categories %}
-
-    {{ category.name }}
-    <form method="post">
-        {% csrf_token %}
-        <input type="hidden" name="category_id" value="{{ category.id }}" />
-
-        {% if category.user_subscribed %}
-            <button disabled>Подписаться</button>
-            <button name="action" value="unsubscribe">Отписаться</button>
-        {% else %}
-        <a href="{% url 'subscribe' category.id %}"><button name="action" value="subscribe">Подписаться</button></a>
-            <button disabled>Отписаться</button>
-        {% endif %}
-    </form>
-    {% endfor %} -->
-
-</body>
-</html>
+                {% if category.user_subscribed %}
+                    <button disabled>Подписаться</button>
+                    <button name="action" value="unsubscribe">Отписаться</button>
+                {% else %}
+                    <button name="action" value="subscribe">Подписаться</button>
+                    <button disabled>Отписаться</button>
+                {% endif %}
+            </form>
+        </p>
+    {% endfor %}
+{% endblock content %}
