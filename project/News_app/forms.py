@@ -18,5 +18,5 @@ class ArticlesCrForm(forms.ModelForm):
 class NewsCrForm(forms.ModelForm):
    class Meta:
        model = Post
-       fields = 'title', 'text', 'date',
+       fields = 'title', 'text', 'date', 'category'
 

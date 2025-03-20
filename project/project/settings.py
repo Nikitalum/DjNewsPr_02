@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    'django_apscheduler',
     
 ]
 
@@ -95,7 +96,7 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 WSGI_APPLICATION = 'project.wsgi.application'
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignUpForm"}
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')

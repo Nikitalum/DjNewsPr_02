@@ -20,7 +20,7 @@ class Articles(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    subscribers = models.ManyToManyField(User,related_name='categories', blank = True)
+    subscribers = models.ManyToManyField(User,related_name='categories', through='Subscriber')
                 
     def __str__(self):
         return self.name.title()
@@ -59,7 +59,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('articles_list', kwargs={"pk": self.pk})
+        return f'/{self.id}'
 
 
 class PostCategory(models.Model):
